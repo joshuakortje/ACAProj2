@@ -1,0 +1,96 @@
+--A program to implement quick sort
+-- 4000 = # of nums to sort
+-- 4004  = beginning of array of nums
+-- 5000 beginning of the stack
+-- 
+-- R1 = Number of elements in the array
+-- R2 = Pointer to the beginning of the array
+-- R4 = holds the start of data
+-- R7 = holds p - r
+-- R20 = holds p
+-- R21 = holds r 
+-- R22 = holds q
+-- R30 = Stack Pointer
+-- 
+Begin Assembly
+-- Stack will be at Org5000 - R30 is Stack Pointer
+ADDI R30, R0, 5000
+-- Data is at Org 4000
+ADDI R4, R0, 4000
+-- Load the number of elements
+LW R1, 0(R4)
+-- Multiply by 4 because each number is a word
+SLL R1, R1, 2
+-- Set R2 as the beginning of the array of numbers
+ADDI R2, R4, 4
+--
+--
+-- initialize p to start of the array
+ADDI R20, R0, R2
+-- initialize r to last element of the array
+ADDI R21, R4, R1
+-- calling quicksort subroutine 
+JAL QuickSort
+HALT
+-- start of quicksort function
+LABEL QuickSort
+-- save R31 onto the stack
+SW R31, 0(R30)
+-- save R20 (p) to the stack
+SW R20, 4(R30)
+--save R21 (r) to the stack
+SW R21, 8(R30)
+--Increment stack pointer
+ADDI R30, R30, 12
+-- R20 minus R21
+SUB R7, R20, R21
+BLTZ R7, EndSort
+
+
+-- TODO partition and set q in R22 (subroutine)
+
+
+-- Set r input parameter to q-1 (indicies)
+ADDI R21, R22, -4
+-- call quicksort for first half of the array
+JAL QuickSort
+-- add 2 to q - 1 (R21) and store as p parameter
+ADDI R20, R21, 8
+-- Put r back in place
+LW R21, -4(R30)
+-- call quicksort for second half of the array
+JAL QuickSort
+--end of quicksort subroutine 
+LABEL EndSort
+-- decrement the stack pointer
+ADDI R30, R30, -12
+-- get the return address
+LW R31, 0(R30)
+-- restore R20 (p)
+LW R20, 4(R30)
+-- restore R21 (r)
+LW R21, 8(R30)
+-- Return from subroutine call
+JR R31
+
+
+
+
+End Assembly
+-- begin main data
+Begin Data 4000 84
+10
+64
+23
+71
+33
+5
+93
+82
+34
+13
+111
+End Data
+-- stack
+Begin Data 5000 100
+End Data
