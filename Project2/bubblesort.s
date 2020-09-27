@@ -10,7 +10,7 @@
 -- R6 = inner loop variable (j)
 -- R7 = Element at j
 -- R8 = Element at j-1
--- R9 = R7 - R8
+-- R9 = R8 - R7
 -- R30 = Stack Pointer
 -- 
 Begin Assembly
@@ -23,9 +23,9 @@ LW R1, 0(R4)
 -- Multiply by 4 because each number is a word
 SLL R1, R1, 2
 -- Set R2 as the beginning of the array of numbers
-ADDI R2, R4, 8
+ADDI R2, R4, 4
 -- R5 now points to first address past array
-ADD R5, R4, R1
+ADD R5, R2, R1
 --Initialize loop variable
 ADD R3, R2, R0
 LABEL OuterLoopStart
@@ -40,8 +40,8 @@ BEQ R6, R3, InnerLoopEnd
 LW R7, 0(R6)
 -- Load element at j-1
 LW R8, -4(R6)
--- Subtract R7 from R8 and store in R7
-SUB R9, R7, R8
+-- Subtract R7 from R8 and store in R9
+SUB R9, R8, R7
 -- If R7 >= R8 we don't need to swap
 BLTZ R9, NoSwap
 -- Store R7 in R8's spot

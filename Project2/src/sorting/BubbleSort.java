@@ -14,7 +14,7 @@ public class BubbleSort {
     public static void bubbleSort(int[] array)
     {
         //we skip the last element because it is already in place.
-        for(int i = 1; i <= array.length - 1; i++)
+        for(int i = 0; i <= array.length - 1; i++)
         {
             for(int j = array.length - 1; j >= i+1; j--)
             {
