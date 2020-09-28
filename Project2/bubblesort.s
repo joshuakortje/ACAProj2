@@ -13,6 +13,7 @@
 -- R9 = R8 - R7
 -- R30 = Stack Pointer
 -- 
+--
 Begin Assembly
 -- Stack will be at Org5000 - R30 is Stack Pointer
 ADDI R30, R0, 5000
@@ -26,11 +27,15 @@ SLL R1, R1, 2
 ADDI R2, R4, 4
 -- R5 now points to first address past array
 ADD R5, R2, R1
+--
+--
 --Initialize loop variable
 ADD R3, R2, R0
 LABEL OuterLoopStart
 -- Loop condition
 BEQ R5, R3, OuterLoopEnd
+--
+--
 -- Initialize inner loop variable to last element of array
 ADDI R6, R5, -4
 LABEL InnerLoopStart
@@ -40,6 +45,8 @@ BEQ R6, R3, InnerLoopEnd
 LW R7, 0(R6)
 -- Load element at j-1
 LW R8, -4(R6)
+--
+--
 -- Subtract R7 from R8 and store in R9
 SUB R9, R8, R7
 -- If R7 >= R8 we don't need to swap
@@ -49,19 +56,27 @@ SW R7, -4(R6)
 --Store R8 in R7's spot
 SW R8, 0(R6)
 LABEL NoSwap
+--
+--
 -- Decrement Inner loop variable
 ADDI R6, R6, -4
 -- Unconditional jump to loop condition
 J InnerLoopStart
 LABEL InnerLoopEnd
+--
+--
 -- Increment address by 4 bytes
 ADDI R3, R3, 4
 --Unconditional jump to top of loop
 J OuterLoopStart
 LABEL OuterLoopEnd
+--
+--
 -- End Program
 HALT
 End Assembly
+--
+--
 -- begin main data
 Begin Data 4000 84
 10
