@@ -5,8 +5,10 @@
 -- 
 -- R1 = Number of elements in the array
 -- R2 = Pointer to the beginning of the array
+-- R3 = holds p - r
 -- R4 = holds the start of data
--- R7 = holds p - r
+-- R5 = holds pivot element (x)
+-- R6 = holds i
 -- R20 = holds p
 -- R21 = holds r 
 -- R22 = holds q
@@ -43,13 +45,17 @@ SW R21, 8(R30)
 --Increment stack pointer
 ADDI R30, R30, 12
 -- R20 minus R21
-SUB R7, R20, R21
-BLTZ R7, EndSort
+SUB R3, R20, R21
+BLTZ R3, EndSort
+--
+-- Partition Code
+-- Get pivot element (x) from at r
+LW R5, 0(R21)
+-- Set i = p (R6 = R20)
+ADD R6, R5, R0
 
 
--- TODO partition and set q in R22 (subroutine)
-
-
+--
 -- Set r input parameter to q-1 (indicies)
 ADDI R21, R22, -4
 -- call quicksort for first half of the array

@@ -28,19 +28,18 @@ public class QuickSort {
     private static int partition(int[] A, int p, int r)
     {
         int x = A[r]; //pivot element
-        int i = p - 1;
+        int i = p; //- 1;
         
-        int temp;
         for(int j = p; j < r; j++)
         {
             if (A[j] <= x)
             {
-                i = i+1;
                 swap(A, i, j);
+                i = i+1;
             }
         }
-        swap(A, i+1, r);
-        return i+1;
+        swap(A, i, r);
+        return i;
     }
     
     //swap function
@@ -70,7 +69,7 @@ public class QuickSort {
         
         System.out.println("Sorted numbers:");
         //Sort
-        quicksort(testArray, 1, testArray.length-1);
+        quicksort(testArray, 0, testArray.length-1);
         
         
         //Print sorted array
