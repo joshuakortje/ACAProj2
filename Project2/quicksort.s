@@ -4,7 +4,6 @@
 -- 5000 beginning of the stack
 -- 
 -- R1 = Number of elements in the array
--- R2 = Pointer to the beginning of the array
 -- R3 = holds p - r
 -- R4 = holds the start of data
 -- R5 = holds pivot element (x)
@@ -27,17 +26,15 @@ ADDI R4, R0, 4000
 LW R1, 0(R4)
 -- Multiply by 4 because each number is a word
 SLL R1, R1, 2
--- Set R2 as the beginning of the array of numbers
-ADDI R2, R4, 4
---
---
 -- initialize p to start of the array
-ADDI R20, R0, R2
+ADDI R20, R4, 4
 -- initialize r to last element of the array
-ADDI R21, R4, R1
+ADD R21, R4, R1
 -- calling quicksort subroutine 
 JAL QuickSort
 HALT
+--
+--
 -- start of quicksort function
 LABEL QuickSort
 -- save R31 onto the stack
@@ -50,13 +47,16 @@ SW R21, 8(R30)
 ADDI R30, R30, 12
 -- R20 minus R21
 SUB R3, R20, R21
-BLTZ R3, EndSort
+-- Branch if p >= r (R21 - R20) >= 0
+BGEZ R3, EndSort
 --
 -- Partition Code
 -- Get pivot element (x) from at r
 LW R5, 0(R21)
 -- Set i = p (R6 = R20)
 ADD R6, R5, R0
+--
+--
 -- Set j (loop variable) equal to p
 ADD R7, R5, R0
 -- Start of Loop
@@ -69,6 +69,8 @@ LW R8, 0(R7)
 SUB R9, R5, R8
 -- Branch if A[j] > x (R9 is negative)
 BLTZ R9, EndIf
+--
+--
 -- Save j as b parameter in swap function
 ADD R23, R7, R0
 -- Call Swap subroutine
