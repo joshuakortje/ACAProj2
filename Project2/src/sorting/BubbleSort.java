@@ -16,7 +16,7 @@ public class BubbleSort {
         //we skip the last element because it is already in place.
         for(int i = 0; i <= array.length - 1; i++)
         {
-            for(int j = array.length - 1; j >= i+1; j--)
+            for(int j = array.length - 1; j > i; j--)
             {
                 if(array[j] < array[j-1])
                 {
@@ -38,7 +38,7 @@ public class BubbleSort {
         
         for (int i = 0; i < testArray.length; i++)
         {
-            testArray[i]= rand.nextInt(range);
+            testArray[i]= rand.nextInt(range*10);
         }
         
         //sort array with bubbleSort
