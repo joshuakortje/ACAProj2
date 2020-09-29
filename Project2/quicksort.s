@@ -7,14 +7,17 @@
 -- R3 = holds p - r
 -- R4 = holds the start of data
 -- R5 = holds pivot element (x)
--- R6 = holds i (also called q after the partition routine)
+-- R6 = holds i (also called q after the partition routine) (also a parameter in swap routine)
 -- R7 = holds j (loop variable)
 -- R8 = holds A[j]
 -- R9 = holds x - A[j] for comparison
 -- R10 = A[a] for swap routine
 -- R11 = A[b] for swap routine
+-- R12 = j - r
 -- R20 = holds p
 -- R21 = holds r 
+-- R23 = b parameter of the swap function
+-- R29 = holds return address for partition
 -- R30 = Stack Pointer
 -- 
 Begin Assembly
@@ -50,51 +53,9 @@ SUB R3, R20, R21
 -- Branch if p >= r (R21 - R20) >= 0
 BGEZ R3, EndSort
 --
--- Partition Code
--- Get pivot element (x) from at r
-LW R5, 0(R21)
--- Set i = p (R6 = R20)
-ADD R6, R5, R0
+JAL Partition
 --
---
--- Set j (loop variable) equal to p
-ADD R7, R5, R0
--- Start of Loop
-LABEL Loop
--- Loop exit condition (j = r)
-BEQ R7, R21, EndLoop
--- Load A[j] into R8
-LW R8, 0(R7)
--- Subtraction R5 - R8 (x - A[j])
-SUB R9, R5, R8
--- Branch if A[j] > x (R9 is negative)
-BLTZ R9, EndIf
---
---
--- Save j as b parameter in swap function
-ADD R23, R7, R0
--- Call Swap subroutine
-JAL Swap
--- Increment i
-ADDI R6, R6, 1
--- End of If statement 
-LABEL EndIf
--- Increment the loop variable (j)
-ADDI R7, R7, 1
--- Unconditional jump to start of loop
-J Loop
--- End of loop
-LABEL EndLoop
--- Save r as b parameter in swap function
-ADD R23, R21, R0
---
---
--- Call Swap subroutine
-JAL Swap
---
--- i is the new q and is already in R6
--- which is where we expect it to be
--- so no "return i" instruction is needed
+-- the output q and is stored in R6
 --
 -- Set r input parameter to q-1 (indicies)
 ADDI R21, R6, -4
@@ -120,6 +81,58 @@ LW R21, 8(R30)
 JR R31
 -- 
 --
+-- Partition subroutine
+LABEL Partition
+-- Save return address in R29
+ADD R29, R31, R0
+-- Get pivot element (x) from at r
+LW R5, 0(R21)
+-- Set i = p (R6 = R20)
+ADD R6, R20, R0
+--
+--
+-- Set j (loop variable) equal to p
+ADD R7, R20, R0
+-- Start of Loop
+LABEL Loop
+-- Subtract j - r for comparison
+SUB R12, R7, R21
+-- Loop exit condition (j = r)
+BGEZ R12, EndLoop
+-- Load A[j] into R8
+LW R8, 0(R7)
+-- Subtraction R5 - R8 (x - A[j])
+SUB R9, R5, R8
+-- Branch if A[j] > x (R9 is negative)
+BLTZ R9, EndIf
+--
+--
+-- Save j as b parameter in swap function
+ADD R23, R7, R0
+-- Call Swap subroutine
+JAL Swap
+-- Increment i
+ADDI R6, R6, 4
+-- End of If statement 
+LABEL EndIf
+-- Increment the loop variable (j)
+ADDI R7, R7, 4
+-- Unconditional jump to start of loop
+J Loop
+-- End of loop
+LABEL EndLoop
+-- Save r as b parameter in swap function
+ADD R23, R21, R0
+--
+--
+-- Call Swap subroutine
+JAL Swap
+-- Load the return address back into R31
+ADD R31, R29, R0
+-- Return from partition
+-- q is returned in register R6
+JR R31
+--
 -- Swap subroutine
 -- parameter a is always i (R6)
 -- parameter b is saved in R23
@@ -143,11 +156,11 @@ End Assembly
 Begin Data 4000 84
 10
 64
-23
+-14
 71
 33
 5
-93
+-8
 82
 34
 13
