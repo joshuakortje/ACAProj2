@@ -1,16 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Joshua Kortje and Isaiah Higgins
+ * Advanced Computer Architecture Project 2
+ * Quick Sort Code
+ * September 29th, 2020
  */
 package sorting;
-
 import java.util.Random;
 
-/**
- *
- * @author jkort
- */
 public class QuickSort {
     
     //Quicksort Algorithm

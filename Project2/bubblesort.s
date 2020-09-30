@@ -1,4 +1,6 @@
---A program to implement bubble sort
+-- Joshua Kortje and Isaiah Higgins
+-- A program to implement bubble sort
+--
 -- 4000 = # of nums to sort
 -- 4004  = beginning of array of nums
 -- 
@@ -84,7 +86,7 @@ End Assembly
 --
 --
 -- begin main data
-Begin Data 4000 84
+Begin Data 4000 44
 10
 -64
 23

@@ -1,4 +1,6 @@
---A program to implement quick sort
+-- Joshua Kortje and Isaiah Higgins
+-- A program to implement quick sort
+--
 -- 4000 = # of nums to sort
 -- 4004  = beginning of array of nums
 -- 5000 beginning of the stack
